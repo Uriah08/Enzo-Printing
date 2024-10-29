@@ -4,7 +4,7 @@ import { DemoCardsDrag } from './DragImages';
 
 const Main = () => {
   return (
-    <div className='h-full w-full px-5 lg:p-0 flex justify-center mt-48 relative overflow-hidden'>
+    <div className='h-full w-full pb-60 px-5 lg:px-0 flex justify-center mt-48 relative overflow-hidden'>
         <div className='flex flex-col items-center h-full z-50'>
             <h1 className='text-xl sm:text-3xl'>You’re printing bro!</h1>
             <SvgPattern/>

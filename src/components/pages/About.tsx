@@ -34,7 +34,7 @@ const About = () => {
         </div>
         <div className='flex flex-col flex-1 min-w-[250px] items-end sm:items-center justify-center'>
         <Image src={"/clock.svg"} alt='about' height={50} width={50}/>
-        <h1 className='font-semibold text-lg mt-7'>24-Hour Turnaround:</h1>
+        <h1 className='font-semibold text-lg mt-7'>24-Hour Turnaround</h1>
         <p className='text-zinc-600 pl-20 sm:px-0 mt-3 text-sm font-light text-end sm:text-center'> Guaranteed printing completion within 24 hours for standard orders, ensuring quick delivery for your customers.</p>
         </div>
         <div className='flex flex-col flex-1 min-w-[250px] items-start sm:items-center justify-center'>
