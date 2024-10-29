@@ -1,6 +1,6 @@
 "use client"
 
-import { Popover } from '@radix-ui/react-popover'
+import { Popover, PopoverClose } from '@radix-ui/react-popover'
 import Image from 'next/image'
 import React from 'react'
 import { PopoverContent, PopoverTrigger } from '../ui/popover'
@@ -12,11 +12,10 @@ const Navigation = () => {
     <div className='absolute top-0 p-5 left-1/2 transform -translate-x-1/2 w-full max-w-[1400px] flex justify-between items-center'>
         <Image src={"/logo.svg"} width={150} height={150} alt='logo'/>
         <div className='lg:flex gap-10 font-light hidden '>
-            <h1 onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</h1>
-            <h1 onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</h1>
-            <h1 onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</h1>
-            <h1 onClick={() => setSelected("product")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCTS</h1>
-            <h1 onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</h1>
+            <a href='#home' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
+            <a href='#about' onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
+            <a href='#service' onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
+            <a href='#contact' onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
         </div>
         <button className=' lg:block hidden py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3]'>
             REQUEST A QUOTE
@@ -40,11 +39,12 @@ const Navigation = () => {
             </PopoverTrigger>
             <PopoverContent align='end' className='lg:hidden'>
                 <div className='flex flex-col gap-3'>
-                    <h1 onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</h1>
-                    <h1 onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</h1>
-                    <h1 onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</h1>
-                    <h1 onClick={() => setSelected("product")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCTS</h1>
-                    <h1 onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</h1>
+                    <PopoverClose className='flex flex-col gap-3 focus:border-none'>
+                    <a href='#home' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
+                    <a href='#about' onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
+                    <a href='#service' onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
+                    <a href='#contact' onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+                    </PopoverClose>
                     <button className='py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3] mt-10'>
                         REQUEST A QUOTE
                     </button>
