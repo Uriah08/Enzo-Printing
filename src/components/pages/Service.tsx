@@ -61,7 +61,7 @@ const Service = () => {
             Explore our wide range of services
         </h1>
       </div>
-      <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 mb-10'>
+      <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8'>
         {services.map((service,i) => (
             <div key={i} className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7'>
                 <Image src={service.image} alt={service.title} height={50} width={50} className={`${i % 2 === 0 ? 'place-self-start':'place-self-end'} sm:place-self-start`}/>
@@ -74,6 +74,10 @@ const Service = () => {
         <div className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7 bg-main rounded-2xl relative overflow-hidden'>
             <Image src={'/sidepic1.svg'} width={140} height={140} alt='side' className="absolute right-[10%]"/>
         </div>
+        </div>
+        <div className='flex sm:flex-row flex-col mb-10 gap-3 justify-between items-center w-full max-w-[1200px] p-5'>
+            <h1 className='font-light sm:text-base text-sm'>Keep updated on our <span className='text-main'>available services</span>. Check them</h1>
+            <button className='text-[#f3f3f3] bg-main p-2 rounded-full'>Check</button>
         </div>
     </section>
   );
