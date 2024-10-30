@@ -98,7 +98,7 @@ const SigninPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-main">Submit</Button>
+            <Button type="submit" className="w-full bg-main">Sign In</Button>
           </form>
         </Form>
         </div>
