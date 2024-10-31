@@ -1,14 +1,95 @@
+"use client"
+
 import Image from 'next/image'
 import React from 'react'
 import { PhoneCall } from 'lucide-react'
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+ 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+import { useToast } from "@/hooks/use-toast"
+ 
+const FormSchema = z.object({
+  feedback: z.string().nonempty("Feedback is required")
+})
+
 const Contact = () => {
+
+    const { toast } = useToast()
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+          feedback: "",
+        },
+      })
+
+      const { handleSubmit, reset, formState: { isSubmitting } } = form;
+
+      const onSubmit = async (values : z.infer<typeof FormSchema>) => {
+        try {
+            const response = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            })
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast({
+                    title: "Feedback submitted!",
+                    description: result.message || "Your feedback has been received.",
+                });
+                reset();
+            } else {
+                toast({
+                    title: "Error",
+                    description: result.message || "Failed to submit feedback",
+                });
+            }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to submit feedback",
+            })
+        }
+      }
+
   return (
     <section id='contact' className='h-full w-full flex flex-col items-center justify-center'>
         <h1 className='text-center text-2xl py-20 w-full'>Contact</h1>
         <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 bg-white flex md:flex-row flex-col gap-5'>
-            <div className='w-full md:w-1/3 flex justify-center md:justify-start'>
+            <div className='w-full md:w-1/3 flex flex-col gap-3 items-center justify-center md:justify-start'>
                 <Image src={"/logo.svg"} width={200} height={200} alt='logo'/>
+                <Form {...form}>
+                    <form onSubmit={handleSubmit(onSubmit)} className='flex w-full justify-center'>
+                        <FormField
+                        control={form.control}
+                        name="feedback"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormControl>
+                                <Input placeholder="feedback" {...field} className='rounded-none'/>
+                            </FormControl>
+                            </FormItem>
+                        )}
+                        />
+                        <button disabled={isSubmitting} className='bg-main text-sm px-3 text-[#f3f3f3]'>{isSubmitting ? 'Loading':'Submit'}</button>
+                    </form>
+                </Form>
             </div>
             <div className='w-full md:w-1/3 flex flex-col items-center md:items-start'>
                 <h1 className='text-zinc-600 text-sm md:text-base'>ST. Sample 304</h1>

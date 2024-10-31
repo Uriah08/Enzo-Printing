@@ -84,8 +84,6 @@ const Products = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
   }
 
@@ -297,7 +295,7 @@ const Products = () => {
               </FormItem>
             )}
           />
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button type="submit" className="w-full bg-main">Submit</Button>
           </form>
         </Form>
       </div>
