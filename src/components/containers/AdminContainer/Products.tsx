@@ -181,26 +181,56 @@ const Products = () => {
       accept: { "image/png": [], "image/jpg": [], "image/jpeg": [] },
     });
 
+    const deleteProduct = async (id: string) => {
+      try {
+        const response = await fetch(`/api/products/${id}`, {
+          method: 'DELETE',
+        });
+    
+        if (response.ok) {
+          setProducts(prev => prev.filter(product => product.id !== id));
+          toast({
+            title: "Product deleted!",
+            description: "Your product has been deleted successfully.",
+          });
+        }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete product.",
+        });
+      }
+    };
+
   return (
     <>
     <h1 className='text-2xl font-semibold'>Products</h1>
-    <div className='w-full h-full gap-5 flex mt-5 border border-zinc-300'>
-      <div className='w-1/2 p-3'>
+    <div className='w-full h-full gap-5 flex md:flex-row flex-col-reverse mt-5 border border-zinc-300'>
+      <div className='w-full md:w-1/2 p-3'>
         <h1 className='text-lg font-medium'>Product List</h1>
         <div className='flex flex-col gap-3 border-t border-zinc-300 mt-3 pt-3 h-full max-h-[700px] overflow-y-auto'>
-          {products.map((product) => (
+          {products.length === 0 ? (<div className="flex w-full h-full justify-center items-center">
+            <h1 className="text-2xl my-32 text-zinc-300 font-bold">No Products Found</h1>
+          </div>) : products.map((product) => (
             <div key={product.id} className='flex w-full'>
             <Image src={product.image} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
             <div className='w-1/2 flex flex-col ml-3'>
               <h1 className='text-lg font-semibold'>{product.title}</h1>
               <h2 className='text-zinc-600 text-sm'>{product.category}</h2>
             </div>
+            <button
+            className='justify-self-end place-self-end bottom-0 bg-red-500 border py-1 px-2 rounded-xl mt-5 font-light duration-200 transition-all hover:bg-red-600'
+            onClick={() => deleteProduct(product.id)}
+          >
+            Delete
+          </button>
           </div>
           ))}
         </div>
       </div>
-      <div className='w-1/2 border-l border-zinc-300 p-3'>
-        <h1 className='text-lg font-medium'>Add Product</h1>
+      <div className='w-full md:w-1/2 border-l border-zinc-300 p-3'>
+        <h1 className='text-lg font-medium '>Add Product</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 border-t border-zinc-300 mt-3 pt-3">
             <FormField

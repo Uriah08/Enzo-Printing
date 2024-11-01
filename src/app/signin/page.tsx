@@ -52,10 +52,10 @@ const SigninPage = () => {
     },
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const { username, password} = data
     try {
-      login(username, password);
+      await login(username, password);
       console.log("Successful");
       router.push('/admin');
     } catch (error) {

@@ -15,10 +15,10 @@ const Navigation = () => {
         <Image src={"/logo.svg"} width={150} height={150} alt='logo'/>
         <div className='lg:flex gap-10 font-light hidden '>
             <a href='#home' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
-            <a href='#about' onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
-            <a href='#service' onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
-            <a href='#product' onClick={() => setSelected("product")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
-            <a href='#contact' onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+            <a href='#about' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
+            <a href='#service' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
+            <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
+            <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
         </div>
         <div className='lg:flex gap-3 items-center hidden'>
         <Link href={'/signin'} className='cursor-pointer'>
@@ -48,10 +48,10 @@ const Navigation = () => {
                 <div className='flex flex-col gap-3'>
                     <PopoverClose className='flex flex-col gap-3 focus:border-none'>
                     <a href='#home' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'home' ? "text-main":""}`}>HOME</a>
-                    <a href='#about' onClick={() => setSelected("about")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
-                    <a href='#service' onClick={() => setSelected("service")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
-                    <a href='#product' onClick={() => setSelected("product")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
-                    <a href='#contact' onClick={() => setSelected("contact")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
+                    <a href='#about' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'about' ? "text-main":""}`}>ABOUT</a>
+                    <a href='#service' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'service' ? "text-main":""}`}>SERVICES</a>
+                    <a href='#product' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'product' ? "text-main":""}`}>PRODUCT</a>
+                    <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
                     </PopoverClose>
                     <Link href={'/signin'} className='mt-10'>ADMIN</Link>
                     <button className='py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3]'>

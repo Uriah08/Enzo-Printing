@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from 'react';
-// import { useAuthStore } from '@/store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 
 import { Popover, PopoverClose } from '@radix-ui/react-popover'
@@ -12,18 +12,15 @@ import { PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import Logout from '@/components/containers/AdminContainer/Logout'
 import Dashboard from '@/components/containers/AdminContainer/Dashboard';
 import Products from '@/components/containers/AdminContainer/Products';
-import Edit from '@/components/containers/AdminContainer/Edit';
 import Feedback from '@/components/containers/AdminContainer/Feedback';
 import Account from '@/components/containers/AdminContainer/Account';
 
 const AdminPage = () => {
 
-  const isAuthenticated = true
-
-  // const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
-  const [selected, setSelected] = React.useState('products')
+  const [selected, setSelected] = React.useState('dashboard')
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -40,7 +37,6 @@ const AdminPage = () => {
         <div className='lg:flex gap-10 font-light hidden '>
             <a onClick={() => setSelected("dashboard")} className={`cursor-pointer ${selected === 'dashboard' ? "text-main":""}`}>DASHBOARD</a>
             <a onClick={() => setSelected("products")} className={`cursor-pointer ${selected === 'products' ? "text-main":""}`}>PRODUCTS</a>
-            <a onClick={() => setSelected("edit")} className={`cursor-pointer ${selected === 'edit' ? "text-main":""}`}>EDIT</a>
             <a onClick={() => setSelected("feedback")} className={`cursor-pointer ${selected === 'feedback' ? "text-main":""}`}>FEEDBACK</a>
             <a onClick={() => setSelected("account")} className={`cursor-pointer ${selected === 'account' ? "text-main":""}`}>ACCOUNT</a>
         </div>
@@ -67,11 +63,11 @@ const AdminPage = () => {
             <PopoverContent align='end' className='lg:hidden'>
                 <div className='flex flex-col gap-3'>
                     <PopoverClose className='flex flex-col gap-3 focus:border-none'>
-                    <a href='#home' onClick={() => setSelected("dashboard")} className={`cursor-pointer ${selected === 'dashboard' ? "text-main":""}`}>DASHBOARD</a>
-                    <a href='#about' onClick={() => setSelected("products")} className={`cursor-pointer ${selected === 'products' ? "text-main":""}`}>PRODUCTS</a>
-                    <a href='#service' onClick={() => setSelected("edit")} className={`cursor-pointer ${selected === 'edit' ? "text-main":""}`}>EDIT</a>
-                    <a href='#product' onClick={() => setSelected("feedback")} className={`cursor-pointer ${selected === 'feedback' ? "text-main":""}`}>FEEDBACK</a>
-                    <a href='#contact' onClick={() => setSelected("account")} className={`cursor-pointer ${selected === 'account' ? "text-main":""}`}>ACCOUNT</a>
+                    <a onClick={() => setSelected("dashboard")} className={`cursor-pointer ${selected === 'dashboard' ? "text-main":""}`}>DASHBOARD</a>
+                    <a onClick={() => setSelected("products")} className={`cursor-pointer ${selected === 'products' ? "text-main":""}`}>PRODUCTS</a>
+              
+                    <a onClick={() => setSelected("feedback")} className={`cursor-pointer ${selected === 'feedback' ? "text-main":""}`}>FEEDBACK</a>
+                    <a onClick={() => setSelected("account")} className={`cursor-pointer ${selected === 'account' ? "text-main":""}`}>ACCOUNT</a>
                     </PopoverClose>
                     <div className='w-full mt-5'>
                     <Logout/>
@@ -83,7 +79,6 @@ const AdminPage = () => {
     <div className='w-full h-full place-self-center max-w-[1400px] p-5 flex flex-col'>
       {selected === 'dashboard' && <Dashboard/>}
       {selected === 'products' && <Products/>}
-      {selected === 'edit' && <Edit/>}
       {selected === 'feedback' && <Feedback/>}
       {selected === 'account' && <Account/>}
     </div>
