@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Check, ChevronsUpDown, ImagePlus } from "lucide-react"
 
 import React from 'react'
@@ -41,6 +40,8 @@ import {
   CommandList,
 } from "@/components/ui/command"
 
+import { useToast } from "@/hooks/use-toast"
+
 const languages = [
   { label: "Paper", value: "Paper" },
   { label: "Book", value: "Book" },
@@ -69,9 +70,22 @@ const formSchema = z.object({
   .refine((file) => file.size !== 0, "Please upload an image")
 })
 
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  image: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 const Products = () => {
 
+  const { toast } = useToast()
+
   const [preview, setPreview] = React.useState<string | ArrayBuffer | null>("");
+  const [products, setProducts] = React.useState<Product[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,9 +97,64 @@ const Products = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('category', values.category);
+    formData.append('image', values.image);
+
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast({
+          title: "Error",
+          description: errorData.message || "Failed to create product.",
+        });
+        throw new Error('Failed to upload product');
+      }
+      toast({
+        title: "Product created!",
+        description: "Your product has been created successfully.",
+      });
+
+      const product = await response.json();
+      console.log('Product uploaded successfully:', product);
+
+      form.reset()
+      setPreview(null);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create product.",
+      });
+    }
   }
+
+  React.useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data);
+        } else {
+          console.error('Failed to fetch products:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const onDrop = React.useCallback(
     (acceptedFiles: File[]) => {
@@ -118,28 +187,16 @@ const Products = () => {
     <div className='w-full h-full gap-5 flex mt-5 border border-zinc-300'>
       <div className='w-1/2 p-3'>
         <h1 className='text-lg font-medium'>Product List</h1>
-        <div className='flex flex-col gap-3 border-t border-zinc-300 mt-3 pt-3'>
-          <div className='flex w-full'>
-            <Image src={"/products/mugsample1.jpg"} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
+        <div className='flex flex-col gap-3 border-t border-zinc-300 mt-3 pt-3 h-full max-h-[700px] overflow-y-auto'>
+          {products.map((product) => (
+            <div key={product.id} className='flex w-full'>
+            <Image src={product.image} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
             <div className='w-1/2 flex flex-col ml-3'>
-              <h1 className='text-lg font-semibold'>Mug 1</h1>
-              <h2 className='text-zinc-600 text-sm'>Tag 1</h2>
+              <h1 className='text-lg font-semibold'>{product.title}</h1>
+              <h2 className='text-zinc-600 text-sm'>{product.category}</h2>
             </div>
           </div>
-          <div className='flex w-full'>
-            <Image src={"/products/mugsample1.jpg"} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
-            <div className='w-1/2 flex flex-col ml-3'>
-              <h1 className='text-lg font-semibold'>Mug 1</h1>
-              <h2 className='text-zinc-600 text-sm'>Tag 1</h2>
-            </div>
-          </div>
-          <div className='flex w-full'>
-            <Image src={"/products/mugsample1.jpg"} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
-            <div className='w-1/2 flex flex-col ml-3'>
-              <h1 className='text-lg font-semibold'>Mug 1</h1>
-              <h2 className='text-zinc-600 text-sm'>Tag 1</h2>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className='w-1/2 border-l border-zinc-300 p-3'>
@@ -180,7 +237,7 @@ const Products = () => {
                             ? languages.find(
                                 (language) => language.value === field.value
                               )?.label
-                            : "Select language"}
+                            : "Select Category"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
@@ -188,11 +245,11 @@ const Products = () => {
                     <PopoverContent className="p-0">
                       <Command>
                         <CommandInput
-                          placeholder="Search framework..."
+                          placeholder="Search category..."
                           className="h-9"
                         />
                         <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
+                          <CommandEmpty>No Category found.</CommandEmpty>
                           <CommandGroup className="max-h-[200px] overflow-y-auto">
                             {languages.map((language) => (
                               <CommandItem
@@ -295,7 +352,7 @@ const Products = () => {
               </FormItem>
             )}
           />
-            <Button type="submit" className="w-full bg-main">Submit</Button>
+            <Button type="submit" disabled={form.formState.isSubmitting} className="w-full bg-main hover:bg-main">{form.formState.isSubmitting ? 'Submitting':'Submit'}</Button>
           </form>
         </Form>
       </div>

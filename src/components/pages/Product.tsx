@@ -1,8 +1,14 @@
 import React from 'react'
-import { Input } from '../ui/input'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const products = [
+    {
+        image:"/products/mugsample1.jpg",
+        title:"Quote Mug",
+        tag:"Mug",
+        description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ut nemo modi quae quam tempora vel"
+    },
     {
         image:"/products/mugsample1.jpg",
         title:"Quote Mug",
@@ -29,9 +35,8 @@ const Product = () => {
         <h1 className='text-center text-2xl pt-20 w-full'>Products Sample</h1>
         <div className='max-w-[1200px] w-full h-full p-5 sm:p-10'>
             <Image src={"/logo.svg"} width={200} height={200} alt='logo' className='place-self-center'/>
-            <div className='flex sm:max-w-[350px] w-full place-self-center mt-5'>
-                <Input className='rounded-none' placeholder='search...'/>
-                <button className='bg-main text-white px-5'>Search</button>
+            <div className='flex w-full justify-center mt-5'>
+                <Link href={'/product'} className='bg-main text-white px-5 py-2 rounded-lg'>View All</Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 rounded-sm overflow-hidden'>
                 {products.map((product, i) => (
@@ -65,7 +70,7 @@ const Product = () => {
             </div>
         </div>
     </section>
-  )
+  );
 }
 
 export default Product

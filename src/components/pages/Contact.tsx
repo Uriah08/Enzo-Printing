@@ -108,6 +108,13 @@ const Contact = () => {
                     <h2 className='text-xs'>Email:</h2>
                     <h1 className=' text-sm md:text-base'>sampleemail@gmail.com</h1>
                 </div>
+                <div className='flex flex-col mt-3 text-zinc-600'>
+                    <h1>If you need Fullstack Developer contact</h1>
+                    <div className='gap-3 flex justify-center'>
+                    <h2 className='text-xs'>Email:</h2>
+                    <h1 className='text-sm md:text-base'>lorenz08.flores@gmail.com</h1>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
