@@ -3,14 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Check, ChevronsUpDown, ImagePlus } from "lucide-react"
+import { Check, ChevronsUpDown } from "lucide-react"
 
 import React from 'react'
 import Image from 'next/image'
 
 import { cn } from "@/lib/utils"
-
-import { useDropzone } from "react-dropzone";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -42,6 +40,8 @@ import {
 
 import { useToast } from "@/hooks/use-toast"
 
+import { UploadButton } from "@/utils/uploadthing";
+
 const languages = [
   { label: "Paper", value: "Paper" },
   { label: "Book", value: "Book" },
@@ -66,8 +66,6 @@ const formSchema = z.object({
   category: z.string({
     required_error: "Please select a category.",
   }),
-  image: z.instanceof(File)
-  .refine((file) => file.size !== 0, "Please upload an image")
 })
 
 interface Product {
@@ -84,8 +82,13 @@ const Products = () => {
 
   const { toast } = useToast()
 
-  const [preview, setPreview] = React.useState<string | ArrayBuffer | null>("");
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string | null>(null);
+  const [isUploadDisabled, setIsUploadDisabled] = React.useState<boolean>(false);
+
+  const [loading, setLoading] = React.useState(false)
+
+  const [deleting, setDeleting] = React.useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -93,23 +96,32 @@ const Products = () => {
       title: "",
       description: "",
       category: "",
-      image: new File([""], "filename"),
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const formData = new FormData();
-    formData.append('title', values.title);
-    formData.append('description', values.description);
-    formData.append('category', values.category);
-    formData.append('image', values.image);
+    const productData = {
+      ...values,
+      image: uploadedFileUrl,
+    };
+
+    if(!uploadedFileUrl) {
+      toast({
+        title: "Error",
+        description: "Please upload an image for your product.",
+      });
+      return;
+    }
 
     try {
       const response = await fetch('/api/products', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         toast({
@@ -118,29 +130,32 @@ const Products = () => {
         });
         throw new Error('Failed to upload product');
       }
+  
       toast({
         title: "Product created!",
         description: "Your product has been created successfully.",
       });
-
+  
       const product = await response.json();
       console.log('Product uploaded successfully:', product);
-
-      form.reset()
-      setPreview(null);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
+      setUploadedFileUrl(null);
+      form.reset();
+      setIsUploadDisabled(false);
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to create product.",
       });
+      console.error('Error:', error);
     }
   }
+  
 
   React.useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/products');
         if (response.ok) {
           const data = await response.json();
@@ -148,40 +163,18 @@ const Products = () => {
         } else {
           console.error('Failed to fetch products:', response.statusText);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching products:', error);
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
 
-  const onDrop = React.useCallback(
-    (acceptedFiles: File[]) => {
-      const reader = new FileReader();
-      try {
-        reader.onload = () => setPreview(reader.result);
-        reader.readAsDataURL(acceptedFiles[0]);
-        form.setValue("image", acceptedFiles[0]);
-        form.clearErrors("image");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        setPreview(null);
-        form.resetField("image");
-      }
-    },
-    [form],
-  );
-
-  const { getRootProps, getInputProps, isDragActive, fileRejections } =
-    useDropzone({
-      onDrop,
-      maxFiles: 1,
-      maxSize: 1000000,
-      accept: { "image/png": [], "image/jpg": [], "image/jpeg": [] },
-    });
-
     const deleteProduct = async (id: string) => {
+      setDeleting(true);
       try {
         const response = await fetch(`/api/products/${id}`, {
           method: 'DELETE',
@@ -194,8 +187,10 @@ const Products = () => {
             description: "Your product has been deleted successfully.",
           });
         }
+        setDeleting(false);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        setDeleting(false);
         toast({
           title: "Error",
           description: "Failed to delete product.",
@@ -210,23 +205,28 @@ const Products = () => {
       <div className='w-full md:w-1/2 p-3'>
         <h1 className='text-lg font-medium'>Product List</h1>
         <div className='flex flex-col gap-3 border-t border-zinc-300 mt-3 pt-3 h-full max-h-[700px] overflow-y-auto'>
-          {products.length === 0 ? (<div className="flex w-full h-full justify-center items-center">
-            <h1 className="text-2xl my-32 text-zinc-300 font-bold">No Products Found</h1>
-          </div>) : products.map((product) => (
-            <div key={product.id} className='flex w-full'>
-            <Image src={product.image} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
-            <div className='w-1/2 flex flex-col ml-3'>
-              <h1 className='text-lg font-semibold'>{product.title}</h1>
-              <h2 className='text-zinc-600 text-sm'>{product.category}</h2>
+          {loading ? (
+            <h1 className="text-2xl my-32 text-zinc-300 font-bold text-center">Loading</h1>
+          ):(
+            products.length === 0 ? (<div className="flex w-full h-full justify-center items-center">
+              <h1 className="text-2xl my-32 text-zinc-300 font-bold">No Products Found</h1>
+            </div>) : products.map((product) => (
+              <div key={product.id} className='flex w-full'>
+              <Image src={product.image} width={50} height={50} alt="logo" className='w-1/2 object-cover h-[100px]'/>
+              <div className='w-1/2 flex flex-col ml-3'>
+                <h1 className='text-lg font-semibold'>{product.title}</h1>
+                <h2 className='text-zinc-600 text-sm'>{product.category}</h2>
+              </div>
+              <button
+              disabled={deleting}
+              className='justify-self-end place-self-end bottom-0 bg-red-500 border py-1 px-2 rounded-xl mt-5 font-light duration-200 transition-all hover:bg-red-600'
+              onClick={() => deleteProduct(product.id)}
+            >
+              {deleting ? 'Deleting':'Delete'}
+            </button>
             </div>
-            <button
-            className='justify-self-end place-self-end bottom-0 bg-red-500 border py-1 px-2 rounded-xl mt-5 font-light duration-200 transition-all hover:bg-red-600'
-            onClick={() => deleteProduct(product.id)}
-          >
-            Delete
-          </button>
-          </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
       <div className='w-full md:w-1/2 border-l border-zinc-300 p-3'>
@@ -326,62 +326,25 @@ const Products = () => {
                 </FormItem>
               )}
             />
-            <FormField
-            control={form.control}
-            name="image"
-            render={() => (
-              <FormItem className="mx-auto md:w-1/2">
-                <FormLabel
-                  className={`${
-                    fileRejections.length !== 0 && "text-destructive"
-                  }`}
-                >
-                  <h2 className={`text-xl font-semibold tracking-tight ${preview ? 'text-black':'text-zinc-300'}`}>
-                    Upload your image
-                    <span
-                      className={
-                        form.formState.errors.image || fileRejections.length !== 0
-                          ? "text-destructive"
-                          : "text-muted-foreground"
-                      }
-                    ></span>
-                  </h2>
-                </FormLabel>
-                <FormControl>
-                  <div
-                    {...getRootProps()}
-                    className="mx-auto flex cursor-pointer flex-col items-center justify-center gap-y-2 rounded-lg border border-zinc-300 p-8"
-                  >
-                    {preview && (
-                      <Image
-                      width={100}
-                      height={100}
-                        src={preview as string}
-                        alt="Uploaded image"
-                        className="max-h-[400px] rounded-lg"
-                      />
-                    )}
-                    <ImagePlus
-                      className={`size-40 text-zinc-300 ${preview ? "hidden" : "block"}`}
-                    />
-                    <Input {...getInputProps()} type="file" />
-                    {isDragActive ? (
-                      <p className="text-zinc-300">Drop the image!</p>
-                    ) : (
-                      <p className="text-zinc-300">Click here or drag an image to upload it</p>
-                    )}
-                  </div>
-                </FormControl>
-                <FormMessage>
-                  {fileRejections.length !== 0 && (
-                    <p>
-                      Image must be less than 1MB and of type png, jpg, or jpeg
-                    </p>
-                  )}
-                </FormMessage>
-              </FormItem>
+            {!uploadedFileUrl ? (
+              <UploadButton
+              endpoint="imageUploader"
+              className={`${isUploadDisabled ? 'hidden':''} bg-zinc-300`} // Disable the upload button based on the state
+              onClientUploadComplete={(res) => {
+                if (res.length > 0) {
+                  const fileUrl = res[0].url;
+                  setUploadedFileUrl(fileUrl);
+                  console.log("Uploaded file URL:", fileUrl);
+                  setIsUploadDisabled(true); // Disable the upload button after the first upload
+                }
+              }}
+              onUploadError={(error: Error) => {
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            ):(
+              <Image src={uploadedFileUrl} width={100} height={100} alt="image"/>
             )}
-          />
             <Button type="submit" disabled={form.formState.isSubmitting} className="w-full bg-main hover:bg-main">{form.formState.isSubmitting ? 'Submitting':'Submit'}</Button>
           </form>
         </Form>

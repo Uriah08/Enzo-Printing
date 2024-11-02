@@ -31,7 +31,7 @@ interface User {
 // Define validation schema using zod
 const userSchema = z.object({
   name: z.string().min(1, 'Username is required'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
+  password: z.string().min(8, 'Password must be at least 8 characters long'),
 });
 
 const Account = () => {

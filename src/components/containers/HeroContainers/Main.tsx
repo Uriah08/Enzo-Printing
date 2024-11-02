@@ -13,7 +13,7 @@ const Main = () => {
                 Welcome to ENZO your one stop solution
                 for all your printing needs.
             </p>
-            <button className='mt-3 sm:mt-5 py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3] sm:text-base text-sm'>
+            <button className='mt-3 sm:mt-5 py-2 px-4 bg-main duration-200 transition-all hover:bg-main2 rounded-full font-medium text-[#f3f3f3] sm:text-base text-sm'>
             REQUEST A QUOTE
             </button>
             {/* <div className='lg:hidden relative h-full w-full mt-20'>

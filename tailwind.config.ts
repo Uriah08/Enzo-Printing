@@ -20,6 +20,7 @@ const config = {
     extend: {
       colors: {
         main:"#1A90F1",
+        main2:"#147cd1",
         follow:"#DD127B",
         myYellow:"#F9C301",
         myYellowFollow:"#CEA100",
@@ -82,4 +83,4 @@ const config = {
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
 
-export default config
+export default config;

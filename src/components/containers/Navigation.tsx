@@ -23,7 +23,7 @@ const Navigation = () => {
         <div className='lg:flex gap-3 items-center hidden'>
         <Link href={'/signin'} className='cursor-pointer'>
         <User size={30} className='text-zinc-600'/></Link>
-        <button className=' py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3]'>
+        <button className=' py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
             REQUEST A QUOTE
         </button>
         </div>
@@ -54,7 +54,7 @@ const Navigation = () => {
                     <a href='#contact' onClick={() => setSelected("home")} className={`cursor-pointer ${selected === 'contact' ? "text-main":""}`}>CONTACT</a>
                     </PopoverClose>
                     <Link href={'/signin'} className='mt-10'>ADMIN</Link>
-                    <button className='py-2 px-4 bg-main rounded-full font-medium text-[#f3f3f3]'>
+                    <button className='py-2 px-4 bg-main rounded-full duration-200 transition-all hover:bg-main2 font-medium text-[#f3f3f3]'>
                         REQUEST A QUOTE
                     </button>
                 </div>

@@ -19,6 +19,8 @@ import { Input } from "@/components/ui/input"
 
 import { useRouter } from "next/navigation"
 
+import { useToast } from "@/hooks/use-toast"
+
 import { useAuthStore } from "@/store/useAuthStore"
  
 const formSchema = z.object({
@@ -33,6 +35,8 @@ const formSchema = z.object({
 const SigninPage = () => {
 
   const router = useRouter()
+
+  const { toast } = useToast()
 
   const { login } = useAuthStore.getState();
 
@@ -61,6 +65,10 @@ const SigninPage = () => {
     } catch (error) {
       console.log(error);
       router.push('/');
+      toast({
+        title: "Error",
+        description: "Invalid credentials",
+      })
     }
   };
 

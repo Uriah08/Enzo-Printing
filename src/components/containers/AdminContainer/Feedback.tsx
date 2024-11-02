@@ -14,11 +14,12 @@ const Feedback = () => {
   const { toast } = useToast();
 
   const [feedbacks, setFeedbacks] = React.useState<Feedback[]>([]);
-
+  const [loading, setLoading] = React.useState(false)
   const [deleting, setDeleting] = React.useState(false)
 
   React.useEffect(() => {
     const fetchFeedbacks = async () => {
+      setLoading(true);
         try {
             const response = await fetch('/api/feedback');
             const data = await response.json();
@@ -31,8 +32,10 @@ const Feedback = () => {
                     description: "Failed to fetch feedbacks",
                 });
             }
+            setLoading(false);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
+          setLoading(false);
             toast({
                 title: "Error",
                 description: "Failed to fetch feedbacks",
@@ -81,21 +84,30 @@ const handleDelete = async (id: string) => {
     <>
     <h1 className='text-2xl font-semibold'>Feedbacks</h1>
     <div className='flex flex-col gap-3 pt-5'>
-      {feedbacks.length === 0 && 
+      {loading ? (
         <div className='flex w-full h-full py-32 justify-center items-center'>
-          <h1 className='text-center text-2xl md:text-5xl font-bold text-zinc-300'>
-            No Feedbacks Found
-          </h1>
-        </div>}
-      {feedbacks.map((feedback) => (
-        <div key={feedback.id} className='border border-zinc-300 p-3 rounded-2xl flex md:flex-row flex-col justify-between items-center'>
-        <h1 className='font-light'><span className='font-semibold'>Feedback: </span>{feedback.message}</h1>
-        <div className='flex items-center gap-3'>
-          <p className='text-zinc-600'>{new Date(feedback.createdAt).toLocaleString()}</p>
-        <button disabled={deleting} onClick={() => handleDelete(feedback.id)} className='bg-red-500 py-1 px-3 rounded-lg text-[#f3f3f3]'>{deleting ? 'Deleting':'Delete'}</button>
-        </div>
+        <h1 className='text-center text-2xl md:text-5xl font-bold text-zinc-300'>
+          Loading...
+        </h1>
       </div>
-      ))}
+      ) : 
+        feedbacks.length === 0 ? (
+          <div className='flex w-full h-full py-32 justify-center items-center'>
+            <h1 className='text-center text-2xl md:text-5xl font-bold text-zinc-300'>
+              No Feedbacks Found
+            </h1>
+          </div>
+        ) : (
+        feedbacks.map((feedback) => (
+          <div key={feedback.id} className='border border-zinc-300 p-3 rounded-2xl flex md:flex-row flex-col justify-between items-center'>
+          <h1 className='font-light'><span className='font-semibold'>Feedback: </span>{feedback.message}</h1>
+          <div className='flex items-center gap-3'>
+            <p className='text-zinc-600'>{new Date(feedback.createdAt).toLocaleString()}</p>
+          <button disabled={deleting} onClick={() => handleDelete(feedback.id)} className='bg-red-500 py-1 px-3 rounded-lg text-[#f3f3f3]'>{deleting ? 'Deleting':'Delete'}</button>
+          </div>
+        </div>
+        ))
+      )}
     </div>
     </>
   )

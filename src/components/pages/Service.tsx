@@ -3,41 +3,41 @@ import React from 'react'
 
 const services = [
     {
-        image:"/bondpaper.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/bondpaper.svg",
+        title: "Paper Prints",
+        description: "High-quality paper ink prints for all your document needs, perfect for office and school."
     },
     {
-        image:"/book.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/book.svg",
+        title: "Book Printing",
+        description: "Get professionally printed books with durable binding and crisp pages for any purpose."
     },
     {
-        image:"/mugs.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/mugs.svg",
+        title: "Custom Mugs",
+        description: "Personalized mug printing with vibrant designs that last, ideal for gifts or branding."
     },
     {
-        image:"/shirts.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/shirts.svg",
+        title: "T-shirt Printing",
+        description: "Design your own t-shirts with bold, long-lasting prints, great for events and promotions."
     },
     {
-        image:"/picture.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/picture.svg",
+        title: "Photo Printing",
+        description: "Print your favorite photos with vivid colors and quality finishes in any size you choose."
     },
     {
-        image:"/sticker.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/sticker.svg",
+        title: "Sticker Printing",
+        description: "Create custom stickers in all shapes and sizes, perfect for branding or personal projects."
     },
     {
-        image:"/scan.svg",
-        title:"Paper Prints",
-        description:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit"
+        image: "/scan.svg",
+        title: "Document Scanning",
+        description: "Fast and accurate scanning services to digitize documents for easy storage and access."
     },
-]
+];
 
 const Service = () => {
   return (
@@ -72,12 +72,20 @@ const Service = () => {
             </div>
         ))}
         <div className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7 bg-main rounded-2xl relative overflow-hidden'>
+        <div className="z-10">
+        <h1 className="text-xl font-semibold text-white leading-tight mb-2">
+            Other Services will be available soon.
+        </h1>
+        <p className="text-white text-sm opacity-90">
+            We&apos;re working hard to bring you new services to meet all your needs. Stay tuned for exciting updates!
+        </p>
+        </div>
             <Image src={'/sidepic1.svg'} width={140} height={140} alt='side' className="absolute right-[10%]"/>
         </div>
         </div>
         <div className='flex sm:flex-row flex-col mb-10 gap-3 justify-between items-center w-full max-w-[1200px] p-5'>
             <h1 className='font-light sm:text-base text-sm'>Keep updated on our <span className='text-main'>available services</span>. Check them</h1>
-            <button className='text-[#f3f3f3] bg-main p-2 rounded-full'>Check</button>
+            <button className='text-[#f3f3f3] bg-main py-2 px-4 rounded-full duration-200 transition-all hover:bg-main2'>Check</button>
         </div>
     </section>
   );

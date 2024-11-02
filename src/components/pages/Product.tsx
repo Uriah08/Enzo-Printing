@@ -36,7 +36,7 @@ const Product = () => {
         <div className='max-w-[1200px] w-full h-full p-5 sm:p-10'>
             <Image src={"/logo.svg"} width={200} height={200} alt='logo' className='place-self-center'/>
             <div className='flex w-full justify-center mt-5'>
-                <Link href={'/product'} className='bg-main text-white px-5 py-2 rounded-lg'>View All</Link>
+                <Link href={'/product'} className='bg-main duration-200 transition-all hover:bg-main2 text-white px-5 py-2 rounded-lg'>View All</Link>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 rounded-sm overflow-hidden'>
                 {products.map((product, i) => (
