@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-    const { id } = await params;
+    const { id } =  params;
   
     try {
       const product = await db.product.findUnique({
