@@ -43,7 +43,8 @@ const Service = () => {
   return (
     <section id='service' className='h-full w-full flex flex-col items-center justify-center'>
         <h1 className='text-center text-2xl py-20 w-full'>Services</h1>
-        <Image src={"/design.svg"} height={1500} width={1500} alt='design' className='pr-10 place-self-start  -ml-8 scale-110 sm:scale-100 sm:ml-0'/>
+        <Image src={"/design.svg"} height={1500} width={1500} alt='design' className='pr-10 place-self-start -ml-8 scale-110 sm:scale-100 sm:ml-0 md:block hidden'/>
+        <Image src={"/design2.svg"} height={1500} width={1500} alt='design' className='place-self-start sm:ml-0 md:hidden block'/>
         <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 flex flex-col lg:flex-row gap-5'>
         <div className='w-full lg:w-1/2 mt-20 sm:mt-32 flex justify-end lg:justify-start'>
           <Image src={"/about.png"} alt='about' height={500} width={500} className=''/>
@@ -61,7 +62,7 @@ const Service = () => {
             Explore our wide range of services
         </h1>
       </div>
-      <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8'>
+      <div className='max-w-[1200px] w-full h-full sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8'>
         {services.map((service,i) => (
             <div key={i} className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7'>
                 <Image src={service.image} alt={service.title} height={50} width={50} className={`${i % 2 === 0 ? 'place-self-start':'place-self-end'} sm:place-self-start`}/>
@@ -71,12 +72,12 @@ const Service = () => {
                 </div>
             </div>
         ))}
-        <div className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7 bg-main rounded-2xl relative overflow-hidden'>
+        <div className='p-5 flex sm:flex-row flex-col md:max-w-[500px] w-full gap-7 bg-main sm:rounded-2xl relative overflow-hidden'>
         <div className="z-10">
-        <h1 className="text-xl font-semibold text-white leading-tight mb-2">
+        <h1 className="text-xl font-semibold text-white text-center sm:text-start leading-tight mb-2">
             Other Services will be available soon.
         </h1>
-        <p className="text-white text-sm opacity-90">
+        <p className="text-white text-sm opacity-90 text-center sm:text-start">
             We&apos;re working hard to bring you new services to meet all your needs. Stay tuned for exciting updates!
         </p>
         </div>

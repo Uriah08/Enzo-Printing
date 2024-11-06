@@ -7,7 +7,7 @@ const About = () => {
       <h1 className='text-center text-2xl pt-20 w-full'>About Us</h1>
       <div className='max-w-[1200px] w-full h-full p-5 sm:p-10 flex flex-col lg:flex-row'>
         <div className='w-full max-w-[500px] lg:w-1/2 mt-32 pr-10'>
-          <h1 className='text-2xl font-semibold'>Lorem ipsum dolor sit amet consectetur adipisicing</h1>
+          <h1 className='text-2xl font-semibold'>How we started?</h1>
           <p className='mt-10 text-zinc-600 font-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptate suscipit perferendis eveniet dolor, amet quia iusto exercitationem porro autem eaque rem laborum, fuga magnam non asperiores enim obcaecati vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita iste incidunt, aspernatur quam temporibus, dicta accusantium delectus officiis!</p>
           <div className='flex gap-3 mt-5'>
             <a target='_blank' href='#' className='cursor-pointer w-10 h-10 group rounded-full border border-main duration-200 transition-all hover:bg-main flex justify-center items-center'>
@@ -30,7 +30,7 @@ const About = () => {
         <div className='flex flex-col flex-1 min-w-[250px] items-start sm:items-center'>
         <Image src={"/payment.svg"} alt='about' height={50} width={50}/>
         <h1 className='font-semibold text-lg mt-10'>Online Payments Available</h1>
-        <p className='text-zinc-600 pr-20 sm:px-0 mt-3 text-sm font-light text-start sm:text-center'>Provide a variety of print sizes and custom dimensions, allowing flexibility for unique projects.</p>
+        <p className='text-zinc-600 pr-20 sm:px-0 mt-3 text-sm font-light text-start sm:text-center'>Online payments are available via GCash, Paymaya, and other services for a seamless transaction experience.</p>
         </div>
         <div className='flex flex-col flex-1 min-w-[250px] items-end sm:items-center justify-center'>
         <Image src={"/clock.svg"} alt='about' height={50} width={50}/>

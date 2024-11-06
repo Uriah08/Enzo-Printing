@@ -1,6 +1,9 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const products = [
     {
@@ -29,7 +32,56 @@ const products = [
     },
 ]
 
+const testimonials = [
+    {
+        image:"/products/mugsample1.jpg",
+        name:"John Doe",
+        title:"Customer",
+        description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque auctor, libero vel tristique consectetur, ipsum nunc condimentum velit, at eleifend enim ipsum id nisi. Donec vel est vel justo tincidunt pulvinar."
+    },
+    {
+        image:"/about.png",
+        name:"Jane Doe",
+        title:"Customer",
+        description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque auctor, libero vel tristique consectetur, ipsum nunc condimentum velit, at eleifend enim ipsum id nisi. Donec vel est vel justo tincidunt pulvinar."
+    },
+]
+
 const Product = () => {
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    const handleNext = () => {
+        stopAutoplay();
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    };
+
+    const handlePrev = () => {
+        stopAutoplay();
+        setCurrentIndex((prevIndex) => 
+            prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+        );
+    };
+
+    const stopAutoplay = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+    };
+
+    useEffect(() => {
+        intervalRef.current = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+        }, 5000);
+
+        return () => stopAutoplay();
+    }, []);
+
+    const { image, name, title, description } = testimonials[currentIndex];
+
   return (
     <section id='product' className='bg-white h-full w-full flex flex-col items-center justify-center'>
         <h1 className='text-center text-2xl pt-20 w-full'>Products Sample</h1>
@@ -63,9 +115,21 @@ const Product = () => {
         <div className='max-w-[1200px] flex flex-col w-full h-full p-5 sm:p-10 mb-20'>
             <h1 className='text-2xl font-semibold'><span className='text-main'>Dedicated Testimonials</span> from our Customers.</h1>
             <div className='flex flex-col'>
-                <div className='bg-main p-5 overflow-hidden mt-10 relative'>
+                <div className='bg-main p-5 overflow-y-hidden mt-10 relative flex justify-center w-full'>
+                <Image src={"/quote.svg"} width={50} height={50} alt='side' className='absolute right-[10%]'/>
                     <Image src={"/sidepic1.svg"} width={200} height={200} alt='side' className='absolute left-[20%]'/>
-                    <h1></h1>
+                    <div className='w-full flex flex-col items-center z-10'>
+                    <Image src={image} width={50} height={50} alt='profile' className='rounded-full w-[50px] h-[50px]'/>
+                    <h1 className='text-[#f4f4f4] font-semibold mt-3'>{name}</h1>
+                    <h2 className='text-[#eeeeee]'>{title}</h2>
+                    <p className='text-sm px-10 text-[#f4f4f4] font-light text-center mt-5 w-full max-w-[800px]'>
+                        &quot;{description}&quot;
+                    </p>
+                    <div className='flex w-full justify-between absolute top-1/2 -translate-y-1/2'>
+                        <ChevronLeft onClick={handlePrev} className='text-[#f4f4f4] cursor-pointer' size={40}/>
+                        <ChevronRight onClick={handleNext} className='text-[#f4f4f4] cursor-pointer' size={40}/>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>

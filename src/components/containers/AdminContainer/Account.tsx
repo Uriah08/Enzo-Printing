@@ -32,6 +32,7 @@ interface User {
 const userSchema = z.object({
   name: z.string().min(1, 'Username is required'),
   password: z.string().min(8, 'Password must be at least 8 characters long'),
+  confirmPassword: z.string().min(8, 'Password must be at least 8 characters long')
 });
 
 const Account = () => {
@@ -43,6 +44,7 @@ const Account = () => {
     defaultValues: {
       name: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -74,34 +76,41 @@ const Account = () => {
   }, [toast, form]);
 
   const onSubmit = async (data: z.infer<typeof userSchema>) => {
-    try {
-      const response = await fetch('/api/user', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: user?.id, name: data.name, password: data.password }),
-      });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setUser(updatedUser);
-        toast({
-          title: "Success",
-          description: "Account updated successfully!",
+    if(data.password === data.confirmPassword) {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: user?.id, name: data.name, password: data.password }),
         });
-      } else {
-        const errorData = await response.json();
+  
+        if (response.ok) {
+          const updatedUser = await response.json();
+          setUser(updatedUser);
+          toast({
+            title: "Success",
+            description: "Account updated successfully!",
+          });
+        } else {
+          const errorData = await response.json();
+          toast({
+            title: "Error",
+            description: errorData.message || "Failed to update account",
+          });
+        }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
         toast({
           title: "Error",
-          description: errorData.message || "Failed to update account",
+          description: `Failed to update account`,
         });
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    }else {
       toast({
         title: "Error",
-        description: `Failed to update account`,
+        description: "Passwords do not match",
       });
     }
   };
@@ -146,6 +155,19 @@ const Account = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input type="password" placeholder="Password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
                           <Input type="password" placeholder="Password" {...field} />
                         </FormControl>

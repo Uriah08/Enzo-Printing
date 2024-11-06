@@ -82,7 +82,7 @@ const Contact = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="feedback" {...field} className='rounded-none'/>
+                                <Input placeholder="Feedback" {...field} className='rounded-none'/>
                             </FormControl>
                             </FormItem>
                         )}
@@ -92,7 +92,7 @@ const Contact = () => {
                 </Form>
             </div>
             <div className='w-full md:w-1/3 flex flex-col items-center md:items-start'>
-                <h1 className='text-zinc-600 text-sm md:text-base'>ST. Sample 304</h1>
+                <h1 className='text-zinc-600 text-sm md:text-base'>088 Bayside St</h1>
                 <h1 className='text-zinc-600 text-sm md:text-base'>Bancaan</h1>
                 <h1 className='text-zinc-600 text-sm md:text-base'>Naic Cavite</h1>
                 <h1 className='mt-2 text-zinc-600'>
@@ -101,12 +101,12 @@ const Contact = () => {
             </div>
             <div className='w-full md:w-1/3 flex flex-col items-center md:items-start'>
             <div className='flex items-center gap-3 text-zinc-600'>
-            <h1 className='text-sm md:text-base'>+63 923 456 1789</h1>
+            <h1 className='text-sm md:text-base'>+63 948 130 0687</h1>
             <PhoneCall size={30} className='text-main'/>
             </div>
                 <div className='flex gap-3 mt-5 text-zinc-600'>
                     <h2 className='text-xs'>Email:</h2>
-                    <h1 className=' text-sm md:text-base'>sampleemail@gmail.com</h1>
+                    <h1 className=' text-sm md:text-base'>printzo744@gmail.com</h1>
                 </div>
                 <div className='flex flex-col mt-3 text-zinc-600'>
                     <h1>If you need Fullstack Developer contact</h1>

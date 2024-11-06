@@ -74,8 +74,8 @@ const SigninPage = () => {
 
   return (
     <div className='flex justify-center items-center h-[100vh] w-full'>
-      <div className='flex max-w-[800px] rounded-2xl border border-zinc-300 overflow-hidden'>
-        <div className='w-1/2 flex flex-col p-5'>
+      <div className='flex max-w-[800px] sm:rounded-2xl border border-zinc-300 overflow-hidden sm:w-fit w-full'>
+        <div className='w-full sm:w-1/2 flex flex-col p-5'>
         <Image src={'/logo.svg'} width={100} height={100} alt="image" className='place-self-center mt-5'/>
         <h1 className='text-2xl font-semibold text-center mt-5'>Admin Sign In</h1>
         <Form {...form}>
@@ -110,7 +110,7 @@ const SigninPage = () => {
           </form>
         </Form>
         </div>
-        <div className='w-1/2'>
+        <div className='w-1/2 sm:block hidden'>
           <Image src={'/about.png'} width={800} height={800} alt="image" priority className="object-cover h-full"/>
         </div>
       </div>
